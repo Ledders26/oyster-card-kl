@@ -5,6 +5,7 @@ describe OysterCard do
   #./spec/oyster_card_spec.rb
   #line 1
   let (:station) { double :station }
+  
   it "should have a zero balance" do
     expect(subject.balance).to eq 0
   end 
@@ -88,5 +89,9 @@ describe OysterCard do
   end
 
   it 'should store the entry and exit station on touch out' do
-
+    subject.top_up(1)
+    subject.touch_in(:station)
+    subject.touch_out(:station)
+    expect(subject.exit_station).to eq :station
+  end
 end
