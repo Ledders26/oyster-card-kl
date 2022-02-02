@@ -5,7 +5,7 @@ describe OysterCard do
   #./spec/oyster_card_spec.rb
   #line 1
   let (:station) { double :station }
-  
+
   it "should have a zero balance" do
     expect(subject.balance).to eq 0
   end 
@@ -75,11 +75,11 @@ describe OysterCard do
       expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::MINIMUM_BALANCE)
     end 
 
-    it "should forget the entry staion of the current journey" do
-      subject.top_up(1)
-      subject.touch_in(:station)
-      expect(subject.touch_out(:station)).to eq nil
-    end 
+    # it "should forget the entry staion of the current journey" do
+    #   subject.top_up(1)
+    #   subject.touch_in(:station)
+    #   expect(subject.touch_out(:station)).to eq nil
+    # end 
 
     it "should accept an exit station when touching out" do
       subject.top_up(1)
@@ -93,5 +93,17 @@ describe OysterCard do
     subject.touch_in(:station)
     subject.touch_out(:station)
     expect(subject.exit_station).to eq :station
+  end
+
+  it 'should store one journey in a hash' do
+    subject.top_up(1)
+    subject.touch_in(:station)
+    subject.touch_out(:station)
+    test_list = {:entry_station => :station, :exit_station => :station}
+    expect(subject.journey_list).to eq test_list
+  end
+  
+  it 'should show empty journey list by default' do
+    expect(subject.journey_list[:entry_station]).to eq nil
   end
 end
