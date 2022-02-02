@@ -64,22 +64,29 @@ describe OysterCard do
 
   describe "#touch_out" do
     it "should touch out" do
-      subject.touch_out
+      subject.touch_out(:station)
       expect(subject).not_to be_in_journey
     end
 
     it "should deduct minimum fare from balance when touched out" do
       subject.top_up(1)
       subject.touch_in(:station)
-      expect{ subject.touch_out }.to change{ subject.balance }.by(-OysterCard::MINIMUM_BALANCE)
+      expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::MINIMUM_BALANCE)
     end 
 
     it "should forget the entry staion of the current journey" do
       subject.top_up(1)
       subject.touch_in(:station)
-      expect(subject.touch_out).to eq nil
+      expect(subject.touch_out(:station)).to eq nil
     end 
 
+    it "should accept an exit station when touching out" do
+      subject.top_up(1)
+      subject.touch_in(:station)
+      expect(subject).to respond_to(:touch_out).with(1).argument
+    end
   end
+
+  it 'should store the entry and exit station on touch out' do
 
 end
