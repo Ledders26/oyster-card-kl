@@ -110,3 +110,6 @@ This is the second week of Makers. We will create an oyster card system.
   * Unit test - touch_out to forget an entry_staion
 
  * Refactor in_journey method to in_journey variable to infer status based on whether there is an entry station or not
+
+12. Adding Jounery History
+ * 
