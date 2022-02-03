@@ -46,8 +46,7 @@ describe OysterCard do
 
     it "should touch in if there is sufficient balance" do
       subject.top_up(1)
-      subject.touch_in(:station)
-      expect(subject).to be_in_journey
+      expect { subject.touch_in(:station) }.not_to raise_error
     end 
 
     it "should accept the entry station of the current journey" do
@@ -57,10 +56,6 @@ describe OysterCard do
   end
 
   describe "#touch_out" do
-    it "should touch out" do
-      subject.touch_out(:station)
-      expect(subject).not_to be_in_journey
-    end
 
     it "should deduct minimum fare from balance when touched out" do
       subject.top_up(1)
@@ -85,6 +80,32 @@ describe OysterCard do
       subject.touch_in(:station)
       subject.touch_out(:station)
       expect(subject.exit_station).to eq :station
+    end
+  end
+
+  describe "#in_journey?" do
+    it "should show in journey to be false when card has not touched in" do
+      expect(subject).not_to be_in_journey
+    end 
+
+    it "should show in journey to be true after a touch in" do
+      subject.top_up(5)
+      subject.touch_in(:station)
+      expect(subject).to be_in_journey
+    end
+
+    it "should show in journey to be false after a touch out" do
+      subject.top_up(5)
+      subject.touch_in(:station)
+      subject.touch_out(:station)
+      expect(subject).not_to be_in_journey
+    end
+  end
+
+  describe "#fare" do
+    it "should return penalty fare if there was no entry station" do
+    subject.top_up(10)
+    expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::PENALTY_FARE)
     end
   end
 end
