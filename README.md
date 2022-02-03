@@ -113,12 +113,18 @@ This is the second week of Makers. We will create an oyster card system.
 
 12. Adding Journey History
  * ### Plan
-  * Feature test - subject.touch_out(station) --> save entry&exit stations to history list Done
-  * Feature test - method to return history list? 
-  * Unit test - touch_out to accept exit_station Done
-  * Unit test - store listed journeys in instance variable, called with attr_reader  Done
-  * Unit test - confirm one journey (entry & exit) can be stored in hash Done
+  * Feature test - subject.touch_out(station) --> save entry&exit stations to history list
+  * Feature test - method to return history list?
+  * Unit test - touch_out to accept exit_station
+  * Unit test - store listed journeys in instance variable, called with attr_accessor
+  * Unit test - confirm one journey (entry & exit) can be stored in hash
   * Unit test - empty list of journeys before first journey (by default) (return nil)
 
-
+13. Creating the station class
+* Write up a plan for how you will interact with your code and manually test in IRB
+### Plan
+  * Feature test - station = Station.new(name, zone)
+  * Unit test - create station - return zone or name
+ Test drive the creation of a Station class that exposes a name and a zone variable
+ Use only one expectation per test
 
