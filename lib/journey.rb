@@ -7,9 +7,6 @@ class Journey
   end
 
   def journey_list(entry, exit)
-    journey = {}
-    journey[:entry_station] = entry
-    journey[:exit_station] = exit
-    @journeys = journey
+    @journeys = {:entry_station => entry, :exit_station => exit}
   end
 end

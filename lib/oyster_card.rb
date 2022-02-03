@@ -24,13 +24,13 @@ class OysterCard
 
   def touch_in(entry_station)
     raise "Insufficient balance" if balance < MINIMUM_BALANCE
+    fare(@entry_station, @exit_station) if in_journey?
     @entry_station = entry_station
   end
 
   def touch_out(exit_station)
     @exit_station = exit_station
     fare(@entry_station, @exit_station)
-    journey.journey_list(@entry_station, @exit_station)
     @entry_station = nil
   end
 
@@ -43,14 +43,12 @@ class OysterCard
 
   def deduct(fare)
     @balance -= fare
+    @exit_station = nil
   end
 
   def fare(entry_station, exit_station)
-    if entry_station == nil
-      deduct(PENALTY_FARE)
-   else
-      deduct(MINIMUM_BALANCE)
-   end
+    journey.journey_list(@entry_station, @exit_station)
+    entry_station == nil || exit_station == nil ? deduct(PENALTY_FARE) : deduct(MINIMUM_BALANCE) 
   end
 
 end 

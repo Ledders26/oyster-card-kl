@@ -24,21 +24,6 @@ describe OysterCard do
     end
   end
 
-  # Removed as deduct method is private
-  # describe "#deduct" do
-  #   it { is_expected.to respond_to(:deduct).with(1).argument }
-
-  #   it "should deduct amount from balance" do
-  #     subject.top_up(10)
-  #     expect{ subject.deduct(10) }.to change { subject.balance }.by -10
-  #   end
-
-  #   it "should decrease balance by minimum fare" do
-    #   subject.top_up(1)
-    #   expect{ subject.deduct(1) }.to change{ subject.balance }.by(-1)
-    # end
-  # end
-
   describe "#touch_in" do
     it "should not touch in if there is insufficient balance" do
       expect{ subject.touch_in(:station) }.to raise_error("Insufficient balance")
@@ -57,31 +42,23 @@ describe OysterCard do
 
   describe "#touch_out" do
 
-    it "should deduct minimum fare from balance when touched out" do
+    it "should deduct minimum fare from balance when touch in followed by touch out" do
       subject.top_up(1)
       subject.touch_in(:station)
       expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::MINIMUM_BALANCE)
     end 
 
-    # it "should forget the entry staion of the current journey" do
-    #   subject.top_up(1)
-    #   subject.touch_in(:station)
-    #   expect(subject.touch_out(:station)).to eq nil
-    # end 
+    it "should forget the entry staion of the current journey" do
+      subject.top_up(1)
+      subject.touch_in(:station)
+      expect(subject.touch_out(:station)).to eq nil
+    end 
 
     it "should accept an exit station as argument when touching out" do
       subject.top_up(1)
       subject.touch_in(:station)
       expect(subject).to respond_to(:touch_out).with(1).argument
     end
-
-    it 'should store the entry and exit station on touch out' do
-      subject.top_up(1)
-      subject.touch_in(:station)
-      subject.touch_out(:station)
-      expect(subject.exit_station).to eq :station
-    end
-  end
 
   describe "#in_journey?" do
     it "should show in journey to be false when card has not touched in" do
@@ -104,8 +81,15 @@ describe OysterCard do
 
   describe "#fare" do
     it "should return penalty fare if there was no entry station" do
-    subject.top_up(10)
-    expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::PENALTY_FARE)
+      subject.top_up(10)
+      expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::PENALTY_FARE)
     end
+
+    it "should return penalty fare if there was no exit station" do
+      subject.top_up(10)
+      subject.touch_in(:station)
+      expect{ subject.touch_in(:station) }.to change{ subject.balance }.by(-OysterCard::PENALTY_FARE)
   end
+end
+end
 end
