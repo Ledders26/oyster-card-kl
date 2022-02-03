@@ -128,3 +128,15 @@ This is the second week of Makers. We will create an oyster card system.
  Test drive the creation of a Station class that exposes a name and a zone variable
  Use only one expectation per test
 
+14. Handling a journey without a touch out
+### Plan
+  * Feature test - new Journey class
+  * read up on Extract Class
+  * Move Journey specific methods to Journey class
+  * Feature test - test a penalty fare (no touch in)
+    card = OysterCard.new
+    card.top_up(x)
+    card.touch_out
+  * Unit test above
+  * repeat above for touch out
+
