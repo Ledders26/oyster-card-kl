@@ -54,7 +54,6 @@ describe OysterCard do
       subject.top_up(1)
       expect(subject.touch_in(:station)).to eq subject.entry_station
     end 
-
   end
 
   describe "#touch_out" do
@@ -75,11 +74,17 @@ describe OysterCard do
     #   expect(subject.touch_out(:station)).to eq nil
     # end 
 
-    it "should accept an exit station when touching out" do
+    it "should accept an exit station as argument when touching out" do
       subject.top_up(1)
       subject.touch_in(:station)
       expect(subject).to respond_to(:touch_out).with(1).argument
     end
+
+    it 'should store the entry and exit station on touch out' do
+      subject.top_up(1)
+      subject.touch_in(:station)
+      subject.touch_out(:station)
+      expect(subject.exit_station).to eq :station
+    end
   end
-  
 end

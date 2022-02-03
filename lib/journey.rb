@@ -11,10 +11,10 @@ class Journey
     # !!entry_station
   end
 
-  def journey_list
+  def journey_list(entry, exit)
     journey = {}
-    journey[:entry_station] = @entry_station
-    journey[:exit_station] = @exit_station
+    journey[:entry_station] = entry
+    journey[:exit_station] = exit
     @journey_list = journey
   end
 end
