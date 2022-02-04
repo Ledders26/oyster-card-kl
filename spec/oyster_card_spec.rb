@@ -1,10 +1,6 @@
 require './lib/oyster_card'
 
 describe OysterCard do
-  #Name Error
-  #./spec/oyster_card_spec.rb
-  #line 1
-  let (:station) { double :station }
 
   it "should have a zero balance" do
     expect(subject.balance).to eq 0
@@ -25,6 +21,19 @@ describe OysterCard do
   end
 
   describe "#touch_in" do
+
+    it "should show in journey to be true after a touch in" do
+      subject.top_up(5)
+      subject.touch_in(:station)
+      expect(subject.journey).to be_in_journey
+    end
+
+    it "should return penalty fare if there was no exit station" do
+      subject.top_up(10)
+      subject.touch_in(:station)
+      expect{ subject.touch_in(:station) }.to change{ subject.balance }.by(-Journey::PENALTY_FARE)
+    end
+
     it "should not touch in if there is insufficient balance" do
       expect{ subject.touch_in(:station) }.to raise_error("Insufficient balance")
     end
@@ -36,11 +45,23 @@ describe OysterCard do
 
     it "should accept the entry station of the current journey" do
       subject.top_up(1)
-      expect(subject.touch_in(:station)).to eq subject.entry_station
+      expect(subject.touch_in(:station)).to eq subject.journey.entry_station
     end 
   end
 
   describe "#touch_out" do
+
+    it "should show in journey to be false after a touch out" do
+      subject.top_up(5)
+      subject.touch_in(:station)
+      subject.touch_out(:station)
+      expect(subject.journey).not_to be_in_journey
+    end
+
+    it "should return penalty fare if there was no entry station" do
+      subject.top_up(10)
+      expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-Journey::PENALTY_FARE)
+    end
 
     it "should deduct minimum fare from balance when touch in followed by touch out" do
       subject.top_up(1)
@@ -59,37 +80,5 @@ describe OysterCard do
       subject.touch_in(:station)
       expect(subject).to respond_to(:touch_out).with(1).argument
     end
-
-  describe "#in_journey?" do
-    it "should show in journey to be false when card has not touched in" do
-      expect(subject).not_to be_in_journey
-    end 
-
-    it "should show in journey to be true after a touch in" do
-      subject.top_up(5)
-      subject.touch_in(:station)
-      expect(subject).to be_in_journey
-    end
-
-    it "should show in journey to be false after a touch out" do
-      subject.top_up(5)
-      subject.touch_in(:station)
-      subject.touch_out(:station)
-      expect(subject).not_to be_in_journey
-    end
   end
-
-  describe "#fare" do
-    it "should return penalty fare if there was no entry station" do
-      subject.top_up(10)
-      expect{ subject.touch_out(:station) }.to change{ subject.balance }.by(-OysterCard::PENALTY_FARE)
-    end
-
-    it "should return penalty fare if there was no exit station" do
-      subject.top_up(10)
-      subject.touch_in(:station)
-      expect{ subject.touch_in(:station) }.to change{ subject.balance }.by(-OysterCard::PENALTY_FARE)
-  end
-end
-end
 end
