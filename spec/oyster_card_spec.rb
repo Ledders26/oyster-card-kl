@@ -16,7 +16,7 @@ describe OysterCard do
     it "should raise an error if top up will exceed maximum amount" do
       maximum_amount = OysterCard::MAXIMUM_AMOUNT
       subject.top_up(maximum_amount)
-      expect{ subject.top_up(1) }.to raise_error("Exceeds Amount - adding 1 makes your 91 exceed 90")
+      expect{ subject.top_up(1) }.to raise_error("Exceeds Amount - adding 1 makes your #{subject.balance + 1} exceed #{OysterCard::MAXIMUM_AMOUNT}")
     end
   end
 
