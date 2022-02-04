@@ -17,7 +17,6 @@ class Journey
   end
 
   def start_journey(station)
-    fare if in_journey?
     @entry_station = station
   end
 

@@ -1,21 +1,30 @@
 require './lib/journey'
-require './lib/oyster_card'
 
 describe Journey do
-let (:station) { double :station }
-let(:oystercard) { OysterCard.new }
+let (:station) { double("Victoria") }
+#let(:oystercard) { OysterCard.new }
 
   describe '#journey_list' do
-    it 'should store one journey in a hash' do
-      oystercard.top_up(1)
-      oystercard.touch_in(:station)
-      oystercard.touch_out(:station)
+
+    xit 'should store one journey in a hash' do
+      oystercard = OysterCard.new
+      # oystercard.top_up(1)
+      # oystercard.touch_in(:station)
+      # oystercard.touch_out(:station)
       test_list = {:entry_station => :station, :exit_station => :station}
       expect(oystercard.journey.journeys).to eq test_list
     end
     
     it 'should show empty journey list by default' do
       expect(subject.journeys).to eq nil
+    end
+
+    describe '#start_journey' do
+      it 'should update entry station to equal station passed' do
+        subject.start_journey("Victoria")
+        expect(subject.entry_station).to eq "Victoria"
+      end
+
     end
   end
 
