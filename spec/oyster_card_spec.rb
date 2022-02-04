@@ -22,12 +22,6 @@ describe OysterCard do
 
   describe "#touch_in" do
 
-    it "should show in journey to be true after a touch in" do
-      subject.top_up(5)
-      subject.touch_in(:station)
-      expect(subject.journey).to be_in_journey
-    end
-
     it "should return penalty fare if there was no exit station" do
       subject.top_up(10)
       subject.touch_in(:station)
@@ -43,20 +37,9 @@ describe OysterCard do
       expect { subject.touch_in(:station) }.not_to raise_error
     end 
 
-    it "should accept the entry station of the current journey" do
-      subject.top_up(1)
-      expect(subject.touch_in(:station)).to eq subject.journey.entry_station
-    end 
   end
 
   describe "#touch_out" do
-
-    it "should show in journey to be false after a touch out" do
-      subject.top_up(5)
-      subject.touch_in(:station)
-      subject.touch_out(:station)
-      expect(subject.journey).not_to be_in_journey
-    end
 
     it "should return penalty fare if there was no entry station" do
       subject.top_up(10)
